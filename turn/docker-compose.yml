@@ -1,0 +1,12 @@
+# coturn for Perch. Host networking is required: TURN hands out a wide range of
+# UDP relay ports and needs to see real client source addresses, which Docker's
+# bridge/NAT would mangle. Run on a VPS with a public IP.
+services:
+  coturn:
+    image: coturn/coturn:4.6
+    container_name: perch-turn
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./turnserver.conf:/etc/coturn/turnserver.conf:ro
+    command: ["-c", "/etc/coturn/turnserver.conf"]
